@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+</head>
+<body>
+    <h1>Product Details</h1>
+    <p><strong>Code:</strong> {{ product.CODE }}</p>
+    <p><strong>Description:</strong> {{ product.Material_Description }}</p>
+    <p><strong>Receiving Date:</strong> {{ product.Receiving_date }}</p>
+    <p><strong>Expiration Date:</strong> {{ product.EXP_Date }}</p>
+    <p><strong>Quantity:</strong> {{ product.Qty }}</p>
+    <!-- Add more fields as necessary -->
+    <form action="/dispatch" method="POST">
+        <input type="hidden" name="material_code" value="{{ product.CODE }}">
+        <button type="submit">Dispatch</button>
+    </form>
+</body>
+</html>

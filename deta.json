@@ -1,0 +1,7 @@
+{
+    "name": "your-app-name",
+    "description": "A brief description of your app",
+    "build": "pip install -r requirements.txt",
+    "start": "python app.py"
+  }
+  

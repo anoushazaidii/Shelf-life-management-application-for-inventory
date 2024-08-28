@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Dashboard</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .modal-header {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .modal-footer {
+            border-top: 1px solid #007bff;
+        }
+        .modal-footer .btn {
+            border-radius: 0;
+        }
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        .flash-messages ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .flash-messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .flash-messages .success {
+            background-color: #28a745;
+        }
+        .flash-messages .danger {
+            background-color: #dc3545; /* Red background for danger messages */
+        }
+        .flash-messages .error {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Product Details</h1>
+        <a href="/" class="btn btn-custom">Back to Dashboard</a>
+
+        <!-- Display flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                <ul>
+                    {% for category, message in messages %}
+                        <li class="flash-message {{ category }}">
+                            {% if category == 'danger' %}
+                                <span class="alert-icon">&#9888;</span> <!-- Alert icon -->
+                            {% endif %}
+                            {{ message }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+
+        {% if product %}
+            <div class="card">
+                <h5 class="card-title">Product Information</h5>
+                <p><strong>Product Code:</strong> {{ product.code }}</p>
+                <p><strong>Material:</strong> {{ product.material_description }}</p>
+                <p><strong>PO Number:</strong> {{ product.po_number }}</p>
+                <p><strong>MD Number:</strong> {{ product.md_number }}</p>
+                <p><strong>Receiving Date:</strong> {{ product.receiving_date }}</p>
+                <p><strong>Expiry Date:</strong> {{ product.expiry_date }}</p>
+                <p><strong>Quantity:</strong> {{ product.remaining_stock }}</p>
+
+                <!-- Issue Button -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#issueModal">
+                    Issue
+                </button>
+            </div>
+
+            <!-- Issue Modal -->
+            <div class="modal fade" id="issueModal" tabindex="-1" role="dialog" aria-labelledby="issueModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="issueModalLabel">Issue Product</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/issued" method="post">
+                                <input type="hidden" name="code" value="{{ product.code }}">
+                                <input type="hidden" name="po_number" value="{{ product.po_number }}">
+                                <input type="hidden" name="md_number" value="{{ product.md_number }}">
+                            
+                                <div class="form-group">
+                                    <label for="issue_quantity">Quantity to Issue:</label>
+                                    <input type="number" name="issue_quantity" id="issue_quantity" class="form-control" min="1" max="{{ product.remaining_stock }}" required>
+                                </div>
+                            
+                                <button type="submit" class="btn btn-primary">Issue</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>Product not found</p>
+        {% endif %}
+    </div>
+
+    <!-- Add Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

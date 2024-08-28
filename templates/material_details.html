@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            
+            <div class="card-header bg-primary text-white">
+                <h2>Material Code: {{ data['material_code'] }}</h2>
+
+            </div>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+
+            <div class="card-body">
+                <p><strong>Description:</strong> {{ data['description'] }}</p>
+                <p><strong>Lots:</strong> {{ data['lots'] }}</p>
+                <p><strong>Total Quantity:</strong> {{ data['total_qty'] }}</p>
+                <p><strong>Remaining Quantity:</strong> {{ data['remaining_qty'] }}</p>
+
+                <table class="table table-bordered mt-4">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Lot #</th>
+                            <th>Receiving Stock</th>
+                            <th>Remaining Stock</th>
+                            <th>Expiry Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in data['products'] %}
+                        <tr>
+                            <td>{{ product.lot_number }}</td>
+                            <td>{{ product.receiving_stock }}</td>
+                            <td>{{ product.remaining_stock }}</td>
+                            <td>{{ product.expiry_date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Back to Dashboard Button -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
